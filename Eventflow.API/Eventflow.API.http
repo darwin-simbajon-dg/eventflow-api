@@ -1,0 +1,6 @@
+@Eventflow.API_HostAddress = http://localhost:5064
+
+GET {{Eventflow.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
