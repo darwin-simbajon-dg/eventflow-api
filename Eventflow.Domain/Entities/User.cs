@@ -18,13 +18,13 @@ namespace Eventflow.Domain.Entities
 
         private User() { } // For EF Core or Dapper
 
-        public User(string firstName, string lastName, Email email, string passwordHash)
+        public User(string firstName, string lastName, Email email)
         {
             Id = Guid.NewGuid();
             FirstName = firstName;
             LastName = lastName;
             Email = email;
-            PasswordHash = passwordHash;
+            //PasswordHash = passwordHash;
             CreatedAt = DateTime.UtcNow;
         }
 
