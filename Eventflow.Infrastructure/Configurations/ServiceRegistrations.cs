@@ -1,5 +1,6 @@
 ﻿using Eventflow.Domain.Interfaces;
 using Eventflow.Infrastructure.Data;
+using Eventflow.Infrastructure.Interfaces;
 using Eventflow.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +17,7 @@ namespace Eventflow.Infrastructure.Configurations
         {
             services.AddSingleton<DapperDbContext>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
             return services;
         }
     }

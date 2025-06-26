@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Eventflow.Domain.Aggregates.UserAggregate;
 using Eventflow.Domain.Entities;
 using Eventflow.Domain.Interfaces;
 using Eventflow.Domain.ValueObjects;
@@ -22,16 +23,50 @@ namespace Eventflow.Infrastructure.Repositories
 
         public async Task<User?> GetByEmailAsync(Email email)
         {
-            using var connection = _context.CreateConnection();
-            var query = "SELECT * FROM Users WHERE Email = @Email";
-            return await connection.QueryFirstOrDefaultAsync<User>(query, new { Email = email });
+            try
+            {
+                using var connection = _context.CreateConnection();
+                var query = $"SELECT * FROM [User] WHERE Email = '@Email'";
+                return await connection.QueryFirstOrDefaultAsync<User>(query, new { Email = email.Value });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+         
         }
 
-        public async Task AddAsync(User user)
+        public async Task<Profile> VerifyUser(Email email, string password)
+        {
+            var user = await GetByEmailAsync(email);
+            var profile = await GetProfileByUser(user);
+            if (user == null) return null;
+            
+            if(user.VerifyPassword(password)) return profile;
+
+            return null;
+        }
+
+        private async Task<Profile> GetProfileByUser(User? user)
         {
             using var connection = _context.CreateConnection();
-            var query = @"INSERT INTO Users (Id, Email, PasswordHash) VALUES (@Id, @Email, @PasswordHash)";
-            await connection.ExecuteAsync(query, user);
+            var query = "SELECT * FROM Profile WHERE Email = @Email";
+            return await connection.QueryFirstOrDefaultAsync<Profile>(query, new { Email = user.Email.Value });
+        }
+
+        public async Task<bool> AddAsync(User user)
+        {
+            using var connection = _context.CreateConnection();
+            var query = @"INSERT INTO [User] (UserId, Email, Password) VALUES (@UserId, @Email, @Password)";
+            var totalAffectedRows = await connection.ExecuteAsync(query, 
+                new {
+                    UserId = user.UserId, 
+                    Email = user.Email.Value, 
+                    Password = user.Password}
+                );
+
+            return totalAffectedRows > 0;
         }
     }
 }

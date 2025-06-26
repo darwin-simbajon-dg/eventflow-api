@@ -1,6 +1,8 @@
 ﻿using EventFlow.Application.Commands.RegisterUser;
+using EventFlow.Application.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Eventflow.API.Endpoints
 {
@@ -8,30 +10,45 @@ namespace Eventflow.API.Endpoints
     {
         public async static void MapAuthEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/auth/register", async (RegisterRequest request, ISender mediator) =>
+            app.MapPost("/api/auth/register", async ([FromBody] RegisterRequest request, ISender mediator) =>
             {
-                var command = new RegisterUserCommand(request.Firstname, request.Lastname, request.Email, request.Password);
-                var result = await mediator.Send(command);
-                return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
+                try
+                {
+                    var command = new RegisterUserCommand(
+                                       request.StudentNumber,
+                                       request.Firstname,
+                                       request.Lastname,
+                                       request.College,
+                                       request.Email,
+                                       request.AlternativeEmail,
+                                       request.Password
+                                     );
+
+                    var result = await mediator.Send(command);
+                    return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
+                }
+                catch (Exception ex)
+                {
+                    return Results.BadRequest(ex.Message);
+                }
+
+               
             })
            .WithName("RegisterUser")
            .WithOpenApi();
 
-            app.MapPost("/api/auth/login", async (LoginRequest request) =>
+            app.MapPost("/api/auth/login", async ([FromBody] LoginRequest request, ISender mediator) =>
             {
-                // TODO: Validate login and return token
-                if (request.Email == "test@example.com" && request.Password == "password")
-                {
-                    return Results.Ok(new { token = "mock-jwt-token" });
-                }
+                var query = new LoginUserQuery(request.Email, request.Password);
+                var result = await mediator.Send(query);
 
-                return Results.Unauthorized();
+                return result != null ? Results.Ok(result) : Results.Unauthorized();
             })
             .WithName("LoginUser")
             .WithOpenApi();
         }
 
-        public record RegisterRequest(string Email, string Password, string Firstname, string Lastname);
+        public record RegisterRequest(string Email, string Password, int StudentNumber, string Firstname, string Lastname, string College, string AlternativeEmail);
         public record LoginRequest(string Email, string Password);
     }
 }

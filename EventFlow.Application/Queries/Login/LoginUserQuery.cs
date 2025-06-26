@@ -1,4 +1,5 @@
-﻿using EventFlow.Application.DTOs;
+﻿using Eventflow.Shared;
+using EventFlow.Application.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,5 +10,5 @@ using System.Threading.Tasks;
 namespace EventFlow.Application.Queries.Login
 {
     public record LoginUserQuery(string Email, string Password)
-    : IRequest<UserDto>;
+    : IRequest<Result<ProfileDTO>>;
 }

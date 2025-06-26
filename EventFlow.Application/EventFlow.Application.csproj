@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Handlers\" />
-    <Folder Include="Intefaces\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eventflow.Domain\Eventflow.Domain.csproj" />
+    <ProjectReference Include="..\Eventflow.Infrastructure\Eventflow.Infrastructure.csproj" />
+    <ProjectReference Include="..\Eventflow.Shared\Eventflow.Shared.csproj" />
   </ItemGroup>
 
 </Project>
