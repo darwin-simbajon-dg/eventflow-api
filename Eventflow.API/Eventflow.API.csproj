@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
@@ -16,6 +17,13 @@
 
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Requests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventFlow.Application\EventFlow.Application.csproj" />
+    <ProjectReference Include="..\Eventflow.Infrastructure\Eventflow.Infrastructure.csproj" />
+    <ProjectReference Include="..\Eventflow.Shared\Eventflow.Shared.csproj" />
   </ItemGroup>
 
 </Project>

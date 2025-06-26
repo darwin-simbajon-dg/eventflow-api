@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.DTOs
 {
-    public record UserDto(Guid Id, string FirstName, string LastName, string Email);
+    public record UserDto(Guid UserId, string Username, string Password);
 
 }

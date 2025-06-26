@@ -13,8 +13,7 @@ namespace Eventflow.Domain.ValueObjects
         public Email(string value)
         {
             if (string.IsNullOrWhiteSpace(value) || !value.Contains("@"))
-                //throw new InvalidEmailException(value);
-                throw new Exception(value);
+                throw new Exception("Invalid Email format");
 
             Value = value.Trim().ToLowerInvariant();
         }

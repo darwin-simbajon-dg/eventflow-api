@@ -7,29 +7,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Eventflow.Shared;
 
 namespace EventFlow.Application.Queries.Login
 {
-    public class LoginUserHandler : IRequestHandler<LoginUserQuery, UserDto>
+    public class LoginUserHandler : IRequestHandler<LoginUserQuery, Result<ProfileDTO>>
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher _hasher;
 
-        public LoginUserHandler(IUserRepository userRepository, IPasswordHasher hasher)
+        public LoginUserHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _hasher = hasher;
         }
 
-        public async Task<UserDto> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ProfileDTO>> Handle(LoginUserQuery request, CancellationToken cancellationToken)
         {
             var email = new Email(request.Email);
 
-            var user = await _userRepository.GetByEmailAsync(email);
-            if (user == null || !user.VerifyPassword(request.Password, _hasher))
-                throw new UnauthorizedAccessException("Invalid email or password.");
+            var profile = await _userRepository.VerifyUser(email, request.Password);
+            //if (user == null || !user.VerifyPassword(request.Password))
+            //    throw new UnauthorizedAccessException("Invalid email or password.");
 
-            return new UserDto(user.Id, user.FirstName, user.LastName, user.Email.ToString());
+            var dto = new ProfileDTO(
+                profile.UserId, 
+                profile.StudentNumber, 
+                profile.Firstname, 
+                profile.Lastname, 
+                profile.Email.ToString(), 
+                profile.Email.ToString(), 
+                profile.College
+               );
+
+            return Result<ProfileDTO>.Success(dto);
         }
     }
 }

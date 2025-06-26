@@ -1,4 +1,5 @@
-﻿using Eventflow.Domain.Entities;
+﻿using Eventflow.Domain.Aggregates.UserAggregate;
+using Eventflow.Domain.Entities;
 using Eventflow.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Eventflow.Domain.Interfaces
     public interface IUserRepository
     {
         Task<User?> GetByEmailAsync(Email email);
-        Task AddAsync(User user);
+        Task<bool> AddAsync(User user);
+        Task<Profile> VerifyUser(Email email, string password);
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace EventFlow.Application.Commands.RegisterUser
 {
 
-    public record RegisterUserCommand(string FirstName, string LastName, string Email, string Password)
+    public record RegisterUserCommand(int StudentNumber, string FirstName, string LastName, string College, string Email, string AlternativeEmail, string Password)
         : IRequest<Result<UserDto>>;
 
 }
