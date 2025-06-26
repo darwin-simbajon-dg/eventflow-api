@@ -4,6 +4,8 @@ using Eventflow.Domain.Entities;
 using Eventflow.Domain.Interfaces;
 using Eventflow.Domain.ValueObjects;
 using Eventflow.Infrastructure.Data;
+using Eventflow.Infrastructure.Data.Models;
+using Eventflow.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +23,13 @@ namespace Eventflow.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<User?> GetByEmailAsync(Email email)
+        public async Task<UserModel?> GetByEmailAsync(Email email)
         {
             try
             {
                 using var connection = _context.CreateConnection();
                 var query = $"SELECT * FROM [User] WHERE Email = '@Email'";
-                return await connection.QueryFirstOrDefaultAsync<User>(query, new { Email = email.Value });
+                return await connection.QueryFirstOrDefaultAsync<UserModel>(query, new { Email = email.Value });
             }
             catch (Exception ex)
             {
@@ -43,16 +45,16 @@ namespace Eventflow.Infrastructure.Repositories
             var profile = await GetProfileByUser(user);
             if (user == null) return null;
             
-            if(user.VerifyPassword(password)) return profile;
+            if(user.Password.Equals(password)) return profile;
 
             return null;
         }
 
-        private async Task<Profile> GetProfileByUser(User? user)
+        private async Task<Profile> GetProfileByUser(UserModel? user)
         {
             using var connection = _context.CreateConnection();
             var query = "SELECT * FROM Profile WHERE Email = @Email";
-            return await connection.QueryFirstOrDefaultAsync<Profile>(query, new { Email = user.Email.Value });
+            return await connection.QueryFirstOrDefaultAsync<Profile>(query, new { Email = user.Email });
         }
 
         public async Task<bool> AddAsync(User user)
