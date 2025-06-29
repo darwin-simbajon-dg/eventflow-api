@@ -1,4 +1,6 @@
 ﻿using Eventflow.Domain.BusinessRules;
+using Eventflow.Domain.Entities;
+using Eventflow.Domain.Event.User;
 using Eventflow.Domain.Interfaces;
 using Eventflow.Domain.ValueObjects;
 using EventFlow.Domain.Event.User;
@@ -18,6 +20,7 @@ namespace Eventflow.Domain.Aggregates.UserAggregate
 
         public Guid UserId { get; private set; }
         public Email Email { get; private set; }
+        public Role Role { get; private set; }
         public string Password { get; private set; }
         private User() { } // For EF Core or Dapper
 
@@ -30,15 +33,30 @@ namespace Eventflow.Domain.Aggregates.UserAggregate
             Validate(new UserValidator(), this);      
         }
 
-        public User(int studentNumber, string firstname, string lastname, string college, Email email, Email alternativeEmail, string password)
+        public User(int studentNumber, string firstname, string lastname, string college, Email email, Email alternativeEmail, string password, bool isAdmin = false)
         {
             UserId = Guid.NewGuid();
             Email = email;
             Password = password;
 
+            SetRole(isAdmin);
+
             Validate(new UserValidator(), this);
 
-            AddDomainEvent(new UserRegisteredDomainEvent(UserId, studentNumber, Email.ToString(), firstname, lastname, college, alternativeEmail.ToString()));
+            AddDomainEvent(new CreateProfileDomainEvent(UserId, studentNumber, Email.ToString(), firstname, lastname, college, alternativeEmail.ToString()));
+            AddDomainEvent(new CreateUserRoleDomainEvent(UserId, Role));
+        }
+
+        private void SetRole(bool isAdmin)
+        {
+            if (isAdmin)
+            { 
+                Role = new Role() { RoleId = Guid.NewGuid(), RoleName = "Admin" };
+            }
+            else
+            {
+                Role = new Role() { RoleId = Guid.NewGuid(), RoleName = "Student" };
+            }
         }
 
         public bool VerifyPassword(string password)

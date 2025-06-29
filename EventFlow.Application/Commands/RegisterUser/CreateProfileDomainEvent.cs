@@ -12,17 +12,17 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.Commands.RegisterUser
 {
-    public class UserRegisteredDomainEventHandler : INotificationHandler<UserRegisteredDomainEvent>
+    public class CreateProfileDomainEvent : INotificationHandler<Domain.Event.User.CreateProfileDomainEvent>
     {
         private readonly IMediator _mediator;
         private readonly IProfileRepository _profileRepository;
 
-        public UserRegisteredDomainEventHandler(IProfileRepository profileRepository)
+        public CreateProfileDomainEvent(IProfileRepository profileRepository)
         {
             _profileRepository = profileRepository;
         }
 
-        public async Task Handle(UserRegisteredDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(Domain.Event.User.CreateProfileDomainEvent notification, CancellationToken cancellationToken)
         {
             var profile = new Profile(
                 notification.UserId,
@@ -31,7 +31,8 @@ namespace EventFlow.Application.Commands.RegisterUser
                 notification.LastName,
                 notification.College,
                 new Email(notification.Email),
-                new Email(notification.AlternativeEmail)
+                new Email(notification.AlternativeEmail),
+                null
                 );
 
             var foundProfile = await _profileRepository.GetProfileByUserId(notification.UserId);

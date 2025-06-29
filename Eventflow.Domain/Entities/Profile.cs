@@ -11,7 +11,7 @@ namespace Eventflow.Domain.Entities
 {
     public class Profile : BaseBusinessRules
     {
-        public Profile(Guid userId, int studentNumber, string firstName, string lastName, string college, Email email, Email alternativeEmail)
+        public Profile(Guid userId, int studentNumber, string firstName, string lastName, string college, Email email, Email alternativeEmail, string imageUrl)
         {
             UserId = userId;
             StudentNumber = studentNumber;
@@ -39,7 +39,9 @@ namespace Eventflow.Domain.Entities
         public Email Email { get; private set; }
 
         public Email AlternativeEmail { get; private set; }
-      
-     
+
+        public string? ImageUrl { get; set; }
+
+
     }
 }

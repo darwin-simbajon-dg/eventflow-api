@@ -16,6 +16,7 @@ namespace Eventflow.Infrastructure.Data.Models
         public string College { get; set; } = default!;
         public string Email { get; set; } = default!;
         public string AlternativeEmail { get; set; } = default!;
+        public string? ImageUrl { get; set; }
 
         public static implicit operator ProfileModel(Profile profile)
         {
@@ -27,7 +28,8 @@ namespace Eventflow.Infrastructure.Data.Models
                 Lastname = profile.Lastname,
                 College = profile.College,
                 Email = profile.Email?.ToString(),
-                AlternativeEmail = profile.AlternativeEmail?.ToString()
+                AlternativeEmail = profile.AlternativeEmail?.ToString(),
+                ImageUrl = profile.ImageUrl ?? "https://canbind.ca/wp-content/uploads/2025/01/placeholder-image-person-jpg.jpg"
             };
         }
     }

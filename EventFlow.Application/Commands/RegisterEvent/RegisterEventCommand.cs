@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventFlow.Application.Commands.CreateEvent
+namespace EventFlow.Application.Commands.RegisterEvent
 {
-   public record CreateEventCommand(CreateEventRequest CreateEventRequest) : IRequest<Result<bool>>;
+    public record RegisterEventCommand(Guid EventId, Guid UserId)
+        : IRequest<Result<bool>>;
 }

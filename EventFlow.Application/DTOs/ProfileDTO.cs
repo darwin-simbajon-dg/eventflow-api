@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.DTOs
 {
-    public record ProfileDTO(Guid UserId, int StudentNumber, string FirstName, string LastName, string Email, string AlternativeEmail, string College);
+    public record ProfileDTO(Guid UserId, int StudentNumber, string FirstName, string LastName, string Email, string AlternativeEmail, string College, string Role, string ImageUrl);
 }

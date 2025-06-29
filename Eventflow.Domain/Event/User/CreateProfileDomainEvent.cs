@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Domain.Event.User
 {
-    public class UserRegisteredDomainEvent : IDomainEvent, INotification
+    public class CreateProfileDomainEvent : IDomainEvent, INotification
     {
         public Guid UserId { get; }
         public int StudentNumber { get; set; }
@@ -20,7 +20,7 @@ namespace EventFlow.Domain.Event.User
 
         public DateTime OccurredOn { get; }
 
-        public UserRegisteredDomainEvent(Guid userId, int studentNumber, string email, string firstName, string lastName, string college, string alternativeEmail)
+        public CreateProfileDomainEvent(Guid userId, int studentNumber, string email, string firstName, string lastName, string college, string alternativeEmail)
         {
             UserId = userId;
             StudentNumber = studentNumber;

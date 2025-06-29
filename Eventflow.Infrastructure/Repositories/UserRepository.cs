@@ -28,7 +28,7 @@ namespace Eventflow.Infrastructure.Repositories
             try
             {
                 using var connection = _context.CreateConnection();
-                var query = $"SELECT * FROM [User] WHERE Email = '@Email'";
+                var query = $"SELECT * FROM [User] WHERE Email = @Email";
                 return await connection.QueryFirstOrDefaultAsync<UserModel>(query, new { Email = email.Value });
             }
             catch (Exception ex)
@@ -39,7 +39,7 @@ namespace Eventflow.Infrastructure.Repositories
          
         }
 
-        public async Task<Profile> VerifyUser(Email email, string password)
+        public async Task<ProfileModel> VerifyUser(Email email, string password)
         {
             var user = await GetByEmailAsync(email);
             var profile = await GetProfileByUser(user);
@@ -50,11 +50,11 @@ namespace Eventflow.Infrastructure.Repositories
             return null;
         }
 
-        private async Task<Profile> GetProfileByUser(UserModel? user)
+        private async Task<ProfileModel> GetProfileByUser(UserModel? user)
         {
             using var connection = _context.CreateConnection();
             var query = "SELECT * FROM Profile WHERE Email = @Email";
-            return await connection.QueryFirstOrDefaultAsync<Profile>(query, new { Email = user.Email });
+            return await connection.QueryFirstOrDefaultAsync<ProfileModel>(query, new { Email = user.Email });
         }
 
         public async Task<bool> AddAsync(User user)

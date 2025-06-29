@@ -12,5 +12,7 @@ namespace Eventflow.Infrastructure.Interfaces
     {
         Task<bool> AddProfile(Profile profile);
         Task<ProfileModel?> GetProfileByUserId(Guid UserId);
+        Task<ProfileModel?> GetProfileByEmail(string email);
+        Task<bool> UpdateProfile(ProfileModel existingProfile);
     }
 }
