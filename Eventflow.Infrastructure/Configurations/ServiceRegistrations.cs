@@ -18,6 +18,10 @@ namespace Eventflow.Infrastructure.Configurations
             services.AddSingleton<DapperDbContext>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IEventAttendanceRepository, EventAttendanceRepository>();
+            services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+
             return services;
         }
     }

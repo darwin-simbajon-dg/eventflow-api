@@ -14,6 +14,6 @@ namespace Eventflow.Infrastructure.Interfaces
     {
         Task<UserModel?> GetByEmailAsync(Email email);
         Task<bool> AddAsync(User user);
-        Task<Profile> VerifyUser(Email email, string password);
+        Task<ProfileModel> VerifyUser(Email email, string password);
     }
 }

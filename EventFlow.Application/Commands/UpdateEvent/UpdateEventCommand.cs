@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventFlow.Application.Commands.CreateEvent
+namespace EventFlow.Application.Commands.UpdateEvent
 {
-   public record CreateEventCommand(CreateEventRequest CreateEventRequest) : IRequest<Result<bool>>;
+    public record UpdateEventCommand(UpdateEventRequest UpdateEventRequest) : IRequest<Result<bool>>;
 }

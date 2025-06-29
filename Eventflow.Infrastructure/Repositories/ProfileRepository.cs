@@ -2,6 +2,7 @@
 using Eventflow.Domain.Aggregates.UserAggregate;
 using Eventflow.Domain.Entities;
 using Eventflow.Domain.Interfaces;
+using Eventflow.Domain.ValueObjects;
 using Eventflow.Infrastructure.Data;
 using Eventflow.Infrastructure.Data.Models;
 using Eventflow.Infrastructure.Interfaces;
@@ -42,11 +43,46 @@ namespace Eventflow.Infrastructure.Repositories
             return totalAffectedRows > 0;
         }
 
+        public async Task<ProfileModel?> GetProfileByEmail(string email)
+        {
+            using var connection = _context.CreateConnection();
+            var query = "SELECT * FROM Profile WHERE Email = @Email";
+            return await connection.QueryFirstOrDefaultAsync<ProfileModel>(query, new { Email = email });
+        }
+
         public async Task<ProfileModel?> GetProfileByUserId(Guid userId)
         {
             using var connection = _context.CreateConnection();
             var query = "SELECT * FROM Profile WHERE UserId = @UserId";
             return await connection.QueryFirstOrDefaultAsync<ProfileModel>(query, new { UserId = userId });
+        }
+
+        public Task<bool> UpdateProfile(ProfileModel existingProfile)
+        {
+            using var connection = _context.CreateConnection();
+            var query = @"UPDATE Profile 
+                          SET Firstname = @Firstname, 
+                              Lastname = @Lastname, 
+                              StudentNumber = @StudentNumber, 
+                              College = @College, 
+                              Email = @Email, 
+                              AlternativeEmail = @AlternativeEmail, 
+                              ImageUrl = @ImageUrl 
+                          WHERE UserId = @UserId";
+
+            var totalAffectedRows = connection.Execute(query, new
+            {
+                UserId = existingProfile.UserId,
+                Firstname = existingProfile.Firstname,
+                Lastname = existingProfile.Lastname,
+                StudentNumber = existingProfile.StudentNumber,
+                College = existingProfile.College,
+                Email = existingProfile.Email,
+                AlternativeEmail = existingProfile.AlternativeEmail,
+                ImageUrl = existingProfile.ImageUrl ?? (object)DBNull.Value
+            });
+
+            return Task.FromResult(totalAffectedRows > 0);
         }
     }
 }

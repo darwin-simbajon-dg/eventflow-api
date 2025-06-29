@@ -2,6 +2,7 @@
 using Eventflow.Domain.Entities;
 using Eventflow.Domain.Interfaces;
 using Eventflow.Domain.ValueObjects;
+using Eventflow.Infrastructure.Interfaces;
 using Eventflow.Shared;
 using EventFlow.Application.DTOs;
 using MediatR;

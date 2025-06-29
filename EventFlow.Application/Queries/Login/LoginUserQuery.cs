@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 
 namespace EventFlow.Application.Queries.Login
 {
-    public record LoginUserQuery(string Email, string Password)
-    : IRequest<Result<ProfileDTO>>;
+    public record LoginUserQuery(string Username, string Password)
+    : IRequest<Result<string>>;
 }

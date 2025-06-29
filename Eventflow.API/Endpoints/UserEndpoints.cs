@@ -39,16 +39,16 @@ namespace Eventflow.API.Endpoints
 
             app.MapPost("/api/auth/login", async ([FromBody] LoginRequest request, ISender mediator) =>
             {
-                var query = new LoginUserQuery(request.Email, request.Password);
+                var query = new LoginUserQuery(request.Username, request.Password);
                 var result = await mediator.Send(query);
 
-                return result != null ? Results.Ok(result) : Results.Unauthorized();
+                return result != null ? Results.Ok(result.Value) : Results.Unauthorized();
             })
             .WithName("LoginUser")
             .WithOpenApi();
         }
 
         public record RegisterRequest(string Email, string Password, int StudentNumber, string Firstname, string Lastname, string College, string AlternativeEmail);
-        public record LoginRequest(string Email, string Password);
+        public record LoginRequest(string Username, string Password);
     }
 }
