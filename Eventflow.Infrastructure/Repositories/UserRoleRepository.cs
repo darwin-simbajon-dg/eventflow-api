@@ -22,10 +22,19 @@ namespace Eventflow.Infrastructure.Repositories
 
         public async Task CreateRoleforUserId(Guid userId)
         {
-            using var connection = _context.CreateConnection();
-            var command = "INSERT INTO [UserRole] (UserId, RoleId) VALUES (@UserId, '156FEB72-1F6E-4C29-9E21-E6D84B3C2700')";
+            try
+            {
+                using var connection = _context.CreateConnection();
+                var command = "INSERT INTO [UserRole] (UserRoleId, UserId, RoleId) VALUES (NEWID(), @UserId, '156FEB72-1F6E-4C29-9E21-E6D84B3C2700')";
 
-            await connection.ExecuteAsync(command, new { UserId = userId });
+                await connection.ExecuteAsync(command, new { UserId = userId });
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
         }
 
         public async Task<UserRole> GetUserRoleById(Guid userId)
