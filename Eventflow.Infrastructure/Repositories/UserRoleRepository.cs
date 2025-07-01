@@ -20,6 +20,14 @@ namespace Eventflow.Infrastructure.Repositories
             _context = dapperDbContext; 
         }
 
+        public async Task CreateRoleforUserId(Guid userId)
+        {
+            using var connection = _context.CreateConnection();
+            var command = "INSERT INTO [UserRole] (UserId, RoleId) VALUES (@UserId, '156FEB72-1F6E-4C29-9E21-E6D84B3C2700')";
+
+            await connection.ExecuteAsync(command, new { UserId = userId });
+        }
+
         public async Task<UserRole> GetUserRoleById(Guid userId)
         {
             using var connection = _context.CreateConnection();

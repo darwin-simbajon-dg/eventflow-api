@@ -18,6 +18,7 @@ namespace Eventflow.Domain.Event.User
 
         public CreateUserRoleDomainEvent(Guid userId, Role role)
         {
+            UserId = userId;
             Role = role;
         }
     }

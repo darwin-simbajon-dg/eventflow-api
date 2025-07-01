@@ -9,6 +9,7 @@ namespace Eventflow.Infrastructure.Interfaces
 {
     public interface IUserRoleRepository
     {
+        Task CreateRoleforUserId(Guid userId);
         Task<UserRole> GetUserRoleById(Guid userId);
     }
 }
