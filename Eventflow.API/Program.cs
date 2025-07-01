@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy", builder =>
     {
         builder
-             .WithOrigins("http://localhost:5173") // 👈 your Vite frontend
+             .WithOrigins("http://localhost:5173", "http://localhost:3000") // 👈 your Vite frontend
              .AllowAnyHeader()
              .AllowAnyMethod()
              .AllowCredentials();
@@ -37,11 +37,11 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.  
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 

@@ -1,4 +1,5 @@
 ﻿using Eventflow.Domain.Event.User;
+using Eventflow.Infrastructure.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,18 @@ namespace EventFlow.Application.Commands.RegisterUser
 {
     public class CreateRoleDomainEventHandler : INotificationHandler<CreateUserRoleDomainEvent>
     {
-        public CreateRoleDomainEventHandler()
+        private readonly IUserRoleRepository _userRoleRepository;
+
+        public CreateRoleDomainEventHandler(IUserRoleRepository userRoleRepository)
         {
             //Inject UserRoleRepository, RoleRepository, and any other dependencies here
 
+            _userRoleRepository = userRoleRepository;
         }
-        public Task Handle(CreateUserRoleDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(CreateUserRoleDomainEvent notification, CancellationToken cancellationToken)
         {
             //call the UserRoleRepository to create a new user role
-
-            return Task.CompletedTask;  
+            await _userRoleRepository.CreateRoleforUserId(notification.UserId);
         }
     }
 }
