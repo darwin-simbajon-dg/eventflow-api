@@ -21,9 +21,9 @@ namespace EventFlow.Application.Commands.ConfirmAttendance
 
         public async Task<Result<bool>> Handle(ConfirmAttendanceCommand request, CancellationToken cancellationToken)
         {
-            var isSuccesfull = _eventAttendanceRepository.ConfirmAttendance(request.request.UserId, request.request.EventId);
+            var isSuccesfull = await _eventAttendanceRepository.ConfirmAttendance(request.request.UserId, request.request.EventId);
 
-            if (isSuccesfull != null)
+            if (!isSuccesfull)
             {
                 return Result<bool>.Failure("Failed to confirm attendance");
             }
