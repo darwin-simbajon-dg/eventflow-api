@@ -32,7 +32,7 @@ namespace Eventflow.API.Endpoints
 
                 var jsonData = JsonConvert.SerializeObject(result.Value);
                 logger.LogInformation("Fetched events for user {UserId}", userId);
-                logger.LogInformation("Data: {data}", jsonData);
+                //logger.LogInformation("Data: {data}", jsonData);
 
                 return result != null ? Results.Ok(result.Value) : Results.NotFound();
             })
@@ -47,8 +47,8 @@ namespace Eventflow.API.Endpoints
                 ILoggerFactory loggerFactory) =>
             {
                 var logger = loggerFactory.CreateLogger("EventEndpoints");
-                var jsonData = JsonConvert.SerializeObject(request);
-                logger.LogInformation("Register event with data {UserId}", jsonData);
+                //var jsonData = JsonConvert.SerializeObject(request);
+                logger.LogInformation("Register event");
 
                 var command = new RegisterEventCommand(request.EventId, request.UserId);
                 var result = await mediator.Send(command);
@@ -59,8 +59,8 @@ namespace Eventflow.API.Endpoints
                     await hubContext.Clients.All.SendAsync("ReceiveMessage", "EventListUpdated");
                 }
 
-                jsonData = JsonConvert.SerializeObject(result.Value);
-                logger.LogInformation("Register event response {data}", jsonData);
+                //var jsonData = JsonConvert.SerializeObject(result.Value);
+                //logger.LogInformation("Register event response {data}", jsonData);
                 return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
             })
             .WithName("RegisterEvent")
@@ -72,9 +72,9 @@ namespace Eventflow.API.Endpoints
                 IHubContext<NotificationHub> hubContext,
                 ILoggerFactory loggerFactory) =>
             {
-                var logger = loggerFactory.CreateLogger("EventEndpoints");
-                var jsonData = JsonConvert.SerializeObject(request);
-                logger.LogInformation("Create event with data {request}", jsonData);
+                //var logger = loggerFactory.CreateLogger("EventEndpoints");
+                //var jsonData = JsonConvert.SerializeObject(request);
+                //logger.LogInformation("Create event with data {request}", jsonData);
 
                 var command = new CreateEventCommand(request);
                 var result = await mediator.Send(command);
@@ -84,8 +84,8 @@ namespace Eventflow.API.Endpoints
                     await hubContext.Clients.All.SendAsync("ReceiveMessage", "EventListUpdated");
                 }
 
-                jsonData = JsonConvert.SerializeObject(result.Value);
-                logger.LogInformation("Create event response {data}", jsonData);
+                //jsonData = JsonConvert.SerializeObject(result.Value);
+                //logger.LogInformation("Create event response {data}", jsonData);
 
                 return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
             })
@@ -109,8 +109,8 @@ namespace Eventflow.API.Endpoints
                     await hubContext.Clients.All.SendAsync("ReceiveMessage", "EventListUpdated");
                 }
 
-                var jsonData = JsonConvert.SerializeObject(result.Value);
-                logger.LogInformation("Delete event response {data}", jsonData);
+                //var jsonData = JsonConvert.SerializeObject(result.Value);
+                //logger.LogInformation("Delete event response {data}", jsonData);
 
                 return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
             })
@@ -124,8 +124,8 @@ namespace Eventflow.API.Endpoints
                 ILoggerFactory loggerFactory) =>
             {
                 var logger = loggerFactory.CreateLogger("EventEndpoints");
-                var jsonData = JsonConvert.SerializeObject(request);
-                logger.LogInformation("Update event with data {request}", jsonData);
+                //var jsonData = JsonConvert.SerializeObject(request);
+                //logger.LogInformation("Update event with data {request}", jsonData);
 
                 var command = new UpdateEventCommand(request);
                 var result = await mediator.Send(command);
@@ -136,8 +136,8 @@ namespace Eventflow.API.Endpoints
                     await hubContext.Clients.All.SendAsync("ReceiveMessage", "EventListUpdated");
                 }
 
-                jsonData = JsonConvert.SerializeObject(result.Value);
-                logger.LogInformation("Delete event response {data}", jsonData);
+                //jsonData = JsonConvert.SerializeObject(result.Value);
+                //logger.LogInformation("Delete event response {data}", jsonData);
 
                 return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
             })
