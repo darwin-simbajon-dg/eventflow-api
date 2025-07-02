@@ -3,6 +3,7 @@ using EventFlow.Application.Queries.Login;
 using MediatR;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Eventflow.API.Endpoints
 {
@@ -10,10 +11,15 @@ namespace Eventflow.API.Endpoints
     {
         public async static void MapAuthEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/auth/register", async ([FromBody] RegisterRequest request, ISender mediator) =>
+            app.MapPost("/api/auth/register", async ([FromBody] RegisterRequest request, 
+                ISender mediator,
+                ILoggerFactory loggerFactory) =>
             {
                 try
                 {
+                    var logger = loggerFactory.CreateLogger("UserEndpoints");
+                    logger.LogInformation("Register event with {data}", JsonConvert.SerializeObject(request));
+
                     var command = new RegisterUserCommand(
                                        request.StudentNumber,
                                        request.Firstname,
@@ -25,6 +31,17 @@ namespace Eventflow.API.Endpoints
                                      );
 
                     var result = await mediator.Send(command);
+
+                    if (result.IsSuccess)
+                    {
+                        logger.LogInformation("Successful registration with response {data}", JsonConvert.SerializeObject(result.Value));
+                    }
+                    else
+                    {
+                        logger.LogInformation("Failed registration with response {data}", JsonConvert.SerializeObject(result.Errors));
+                    }
+                    
+
                     return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Errors);
                 }
                 catch (Exception ex)
